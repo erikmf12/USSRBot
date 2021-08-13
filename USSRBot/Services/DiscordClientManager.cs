@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,15 +16,16 @@ namespace USSRBot.Services
 
 		private DiscordSocketClient _client;
 
-		private const string _token = "NzYwNjg2OTc5MjU1MzY5NzQ4.X3Pq9A.gGIQD0pvzBs3-mfcOJuWze8eH88";
+		private readonly string _token;
 		private readonly IDiscordCommandService _commandService;
 		private readonly ILogger<DiscordClientManager> _logger;
 
 		public DiscordClientManager(IDiscordCommandService commandService,
-			ILogger<DiscordClientManager> logger)
+			ILogger<DiscordClientManager> logger,
+			IConfiguration config)
 		{
 			_client = new DiscordSocketClient();
-
+			_token = config["Token"];
 			SubscribeHandlers();
 			
 			_commandService = commandService;
